@@ -16,6 +16,7 @@ st.set_page_config(
 
 # ====== TIMEZONE & DEFAULT SETTINGS ======
 wib = pytz.timezone("Asia/Jakarta")
+today_wib = datetime.now(wib).date()
 
 # ====== POLA TEKS ======
 pat_pair   = re.compile(r"\b([A-Z0-9]+USDT)\b")
@@ -107,10 +108,8 @@ async def scrape_only_linked_hits_wib(start_date, end_date, channel_id, api_id, 
             "duration_display": dur_str,
             "date_wib": date_wib,
             "root_msg_id": root.id,
-            "root_link": build_link(channel_id, root.id),
             "update_date_wib": upd_wib,
             "update_msg_id": m.id,
-            "update_link": build_link(channel_id, m.id),
         })
 
     await client.disconnect()
@@ -178,15 +177,15 @@ def main():
         with col1:
             start_date = st.date_input(
                 "Start Date",
-                value=datetime.now() - timedelta(days=7),
-                max_value=datetime.now().date()
+                value=(today_wib - timedelta(days=7)),
+                max_value=today_wib
             )
         
         with col2:
             end_date = st.date_input(
                 "End Date",
-                value=datetime.now().date(),
-                max_value=datetime.now().date()
+                value=today_wib,
+                max_value=today_wib
             )
         
         if start_date > end_date:
