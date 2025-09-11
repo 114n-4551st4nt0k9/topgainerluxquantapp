@@ -243,8 +243,9 @@ def main():
                     st.metric("Total Hits", len(df))
                 
                 with col2:
-                    avg_gain = df["pct_to_t4"].mean()
-                    st.metric("Avg Gain", f"{avg_gain:.2f}%")
+                    # Average gain dari top 5 performers
+                    top5_avg_gain = df.nlargest(5, "pct_to_t4")["pct_to_t4"].mean()
+                    st.metric("Avg Gain (Top 5)", f"{top5_avg_gain:.2f}%")
                 
                 with col3:
                     avg_duration = df["duration_minutes"].mean()
