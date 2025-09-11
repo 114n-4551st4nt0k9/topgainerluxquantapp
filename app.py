@@ -256,22 +256,11 @@ def main():
                 
                 # Display main table
                 st.subheader("📊 Target 4 Hits")
-                st.markdown("*Click on 📋 and ✅ icons to view proof links*")
                 
                 st.dataframe(
                     display_df,
                     use_container_width=True,
-                    hide_index=True,
-                    column_config={
-                        "📋 Signal": st.column_config.LinkColumn(
-                            "📋 Signal",
-                            help="View original signal proof"
-                        ),
-                        "✅ Hit": st.column_config.LinkColumn(
-                            "✅ Hit",
-                            help="View hit confirmation proof"
-                        )
-                    }
+                    hide_index=True
                 )
                 
                 # Statistics section
