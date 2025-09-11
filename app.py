@@ -154,7 +154,7 @@ def format_dataframe(df, sort_by="update_date_wib", ascending=False):
 # ====== MAIN APP ======
 def main():
     st.title("📈 Target 4 Hit Tracker")
-    st.markdown("Track trade setup forecast that reached Target 4")
+    st.markdown("Track trading signals that reached Target 4")
     
     # Sidebar untuk settings
     with st.sidebar:
@@ -262,7 +262,7 @@ def main():
                 )
                 
                 # Expandable section for links
-                with st.expander("🔗 View Proof Output Links"):
+                with st.expander("🔗 View Telegram Links"):
                     link_df = full_df[["pair", "root_link", "update_link"]].copy()
                     link_df.columns = ["Pair", "Signal Link", "Hit Confirmation Link"]
                     
