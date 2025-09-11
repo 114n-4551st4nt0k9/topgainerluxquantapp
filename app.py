@@ -152,7 +152,7 @@ def format_dataframe(df, sort_by="update_date_wib", ascending=False):
 
 # ====== MAIN APP ======
 def main():
-    st.title("📈 Target 4 Hit Tracker")
+    st.title("📈 Top Gainer Live Data of LuxQuant System")
     st.markdown("Track trading signals that reached Target 4")
     
     # Sidebar untuk settings
@@ -215,6 +215,14 @@ def main():
         if st.button("🔄 Refresh Data", type="primary", use_container_width=True):
             st.cache_data.clear()
             st.rerun()
+    
+    # Display periode yang dipilih
+    st.markdown(f"""
+    <div style="background: linear-gradient(90deg, #667eea, #764ba2); 
+                padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center;">
+        <h3 style="color: white; margin: 0;">📅 Selected Period: {start_date.strftime('%B %d, %Y')} - {end_date.strftime('%B %d, %Y')}</h3>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Fetch data with loading spinner
     with st.spinner("Fetching data from Telegram..."):
