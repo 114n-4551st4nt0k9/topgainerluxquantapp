@@ -122,7 +122,7 @@ async def scrape_only_linked_hits_wib(start_date, end_date, channel_id, api_id, 
         return pd.DataFrame()
 
 def format_dataframe(df, sort_by="update_date_wib", ascending=False):
-    """Format dan sort dataframe"""
+    """Format dan sort dataframe dengan link inline"""
     if df.empty:
         return df
     
@@ -137,19 +137,35 @@ def format_dataframe(df, sort_by="update_date_wib", ascending=False):
     # Reset index
     df = df.reset_index(drop=True)
     
-    # Select columns to display
+    # Create display dataframe dengan link inline
     display_df = df[[
         "pair", "entry", "target4_final", "pct_display", 
-        "duration_display", "date_wib", "update_date_wib"
+        "duration_display", "date_wib", "update_date_wib",
+        "root_link", "update_link"
     ]].copy()
     
-    # Rename columns for display
-    display_df.columns = [
-        "Pair", "Entry", "Target 4", "Gain %", 
-        "Duration", "Signal Time", "Hit Time"
+    # Format kolom dengan link
+    display_df["Pair"] = display_df.apply(
+        lambda row: f"[{row['pair']}]({row['root_link']})", axis=1
+    )
+    
+    display_df["Hit Time"] = display_df.apply(
+        lambda row: f"[{row['update_date_wib'].strftime('%Y-%m-%d %H:%M:%S')}]({row['update_link']})", axis=1
+    )
+    
+    # Select dan rename columns for display
+    final_df = display_df[[
+        "Pair", "entry", "target4_final", "pct_display", 
+        "duration_display", "date_wib", "Hit Time"
+    ]].copy()
+    
+    # Rename columns
+    final_df.columns = [
+        "Pair (Proof Call)", "Entry", "Target 4", "Gain %", 
+        "Duration", "Signal Time", "Hit Time (Proof Hit)"
     ]
     
-    return display_df, df
+    return final_df, df
 
 # ====== MAIN APP ======
 def main():
@@ -253,27 +269,30 @@ def main():
                     minutes = int(avg_duration % 60)
                     st.metric("Avg Duration", f"{hours}h {minutes}m")
                 
-                # Display main table
+                # Display main table dengan markdown untuk render link
                 st.subheader("📊 Target 4 Hits")
+                st.markdown("*Click on the pair name for signal proof, and hit time for hit confirmation proof*")
+                
+                # Convert to markdown format untuk render link
                 st.dataframe(
                     display_df,
                     use_container_width=True,
-                    hide_index=True
+                    hide_index=True,
+                    column_config={
+                        "Pair (Proof Call)": st.column_config.LinkColumn(
+                            "Pair (Proof Call)",
+                            help="Click to view original signal",
+                            validate="^https://t\.me/.*",
+                            max_chars=100
+                        ),
+                        "Hit Time (Proof Hit)": st.column_config.LinkColumn(
+                            "Hit Time (Proof Hit)",
+                            help="Click to view hit confirmation",
+                            validate="^https://t\.me/.*",
+                            max_chars=200
+                        )
+                    }
                 )
-                
-                # Expandable section for links
-                with st.expander("🔗 View Telegram Links"):
-                    link_df = full_df[["pair", "root_link", "update_link"]].copy()
-                    link_df.columns = ["Pair", "Signal Link", "Hit Confirmation Link"]
-                    
-                    for idx, row in link_df.iterrows():
-                        col1, col2, col3 = st.columns([2, 3, 3])
-                        with col1:
-                            st.write(row["Pair"])
-                        with col2:
-                            st.markdown(f"[Signal]({row['Signal Link']})")
-                        with col3:
-                            st.markdown(f"[Hit Confirmation]({row['Hit Confirmation Link']})")
                 
                 # Statistics section
                 st.subheader("📈 Statistics")
@@ -293,8 +312,17 @@ def main():
                     for idx, row in fastest.iterrows():
                         st.write(f"• {row['pair']}: {row['duration_display']}")
                 
-                # Download button
-                csv = display_df.to_csv(index=False)
+                # Download button - export tanpa link untuk CSV
+                csv_df = full_df[[
+                    "pair", "entry", "target4_final", "pct_display", 
+                    "duration_display", "date_wib", "update_date_wib"
+                ]].copy()
+                csv_df.columns = [
+                    "Pair", "Entry", "Target 4", "Gain %", 
+                    "Duration", "Signal Time", "Hit Time"
+                ]
+                
+                csv = csv_df.to_csv(index=False)
                 st.download_button(
                     label="📥 Download CSV",
                     data=csv,
