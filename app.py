@@ -140,14 +140,12 @@ def format_dataframe(df, sort_by="update_date_wib", ascending=False):
     # Create display dataframe
     display_df = pd.DataFrame({
         "Pair": df["pair"],
-        "📋 Signal": df["root_link"],
         "Entry": df["entry"],
         "Target 4": df["target4_final"],
         "Gain %": df["pct_display"],
         "Duration": df["duration_display"],
         "Signal Time": df["date_wib"].dt.strftime('%Y-%m-%d %H:%M:%S'),
         "Hit Time": df["update_date_wib"].dt.strftime('%Y-%m-%d %H:%M:%S'),
-        "✅ Hit": df["update_link"]
     })
     
     return display_df, df
