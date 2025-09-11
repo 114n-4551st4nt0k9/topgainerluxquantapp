@@ -122,7 +122,7 @@ async def scrape_only_linked_hits_wib(start_date, end_date, channel_id, api_id, 
         return pd.DataFrame()
 
 def format_dataframe(df, sort_by="update_date_wib", ascending=False):
-    """Format dan sort dataframe dengan link inline"""
+    """Format dan sort dataframe"""
     if df.empty:
         return df
     
@@ -137,35 +137,20 @@ def format_dataframe(df, sort_by="update_date_wib", ascending=False):
     # Reset index
     df = df.reset_index(drop=True)
     
-    # Create display dataframe dengan link inline
-    display_df = df[[
-        "pair", "entry", "target4_final", "pct_display", 
-        "duration_display", "date_wib", "update_date_wib",
-        "root_link", "update_link"
-    ]].copy()
+    # Create display dataframe
+    display_df = pd.DataFrame({
+        "Pair": df["pair"],
+        "📋 Signal": df["root_link"],
+        "Entry": df["entry"],
+        "Target 4": df["target4_final"],
+        "Gain %": df["pct_display"],
+        "Duration": df["duration_display"],
+        "Signal Time": df["date_wib"].dt.strftime('%Y-%m-%d %H:%M:%S'),
+        "Hit Time": df["update_date_wib"].dt.strftime('%Y-%m-%d %H:%M:%S'),
+        "✅ Hit": df["update_link"]
+    })
     
-    # Format kolom dengan link
-    display_df["Pair"] = display_df.apply(
-        lambda row: f"[{row['pair']}]({row['root_link']})", axis=1
-    )
-    
-    display_df["Hit Time"] = display_df.apply(
-        lambda row: f"[{row['update_date_wib'].strftime('%Y-%m-%d %H:%M:%S')}]({row['update_link']})", axis=1
-    )
-    
-    # Select dan rename columns for display
-    final_df = display_df[[
-        "Pair", "entry", "target4_final", "pct_display", 
-        "duration_display", "date_wib", "Hit Time"
-    ]].copy()
-    
-    # Rename columns
-    final_df.columns = [
-        "Pair (Proof Call)", "Entry", "Target 4", "Gain %", 
-        "Duration", "Signal Time", "Hit Time (Proof Hit)"
-    ]
-    
-    return final_df, df
+    return display_df, df
 
 # ====== MAIN APP ======
 def main():
@@ -269,27 +254,22 @@ def main():
                     minutes = int(avg_duration % 60)
                     st.metric("Avg Duration", f"{hours}h {minutes}m")
                 
-                # Display main table dengan markdown untuk render link
+                # Display main table
                 st.subheader("📊 Target 4 Hits")
-                st.markdown("*Click on the pair name for signal proof, and hit time for hit confirmation proof*")
+                st.markdown("*Click on 📋 and ✅ icons to view proof links*")
                 
-                # Convert to markdown format untuk render link
                 st.dataframe(
                     display_df,
                     use_container_width=True,
                     hide_index=True,
                     column_config={
-                        "Pair (Proof Call)": st.column_config.LinkColumn(
-                            "Pair (Proof Call)",
-                            help="Click to view original signal",
-                            validate="^https://t\.me/.*",
-                            max_chars=100
+                        "📋 Signal": st.column_config.LinkColumn(
+                            "📋 Signal",
+                            help="View original signal proof"
                         ),
-                        "Hit Time (Proof Hit)": st.column_config.LinkColumn(
-                            "Hit Time (Proof Hit)",
-                            help="Click to view hit confirmation",
-                            validate="^https://t\.me/.*",
-                            max_chars=200
+                        "✅ Hit": st.column_config.LinkColumn(
+                            "✅ Hit",
+                            help="View hit confirmation proof"
                         )
                     }
                 )
@@ -312,7 +292,7 @@ def main():
                     for idx, row in fastest.iterrows():
                         st.write(f"• {row['pair']}: {row['duration_display']}")
                 
-                # Download button - export tanpa link untuk CSV
+                # Download button
                 csv_df = full_df[[
                     "pair", "entry", "target4_final", "pct_display", 
                     "duration_display", "date_wib", "update_date_wib"
