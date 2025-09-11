@@ -137,17 +137,15 @@ def format_dataframe(df, sort_by="update_date_wib", ascending=False):
     # Reset index
     df = df.reset_index(drop=True)
     
-    # Create display dataframe
+    # Create display dataframe tanpa kolom link
     display_df = pd.DataFrame({
         "Pair": df["pair"],
-        "📋 Signal": df["root_link"],
         "Entry": df["entry"],
         "Target 4": df["target4_final"],
         "Gain %": df["pct_display"],
         "Duration": df["duration_display"],
-        "Signal Time": df["date_wib"].dt.strftime('%Y-%m-%d %H:%M:%S'),
-        "Hit Time": df["update_date_wib"].dt.strftime('%Y-%m-%d %H:%M:%S'),
-        "✅ Hit": df["update_link"]
+        "Signal Time": df["date_wib"].dt.strftime('%m-%d %H:%M'),
+        "Hit Time": df["update_date_wib"].dt.strftime('%m-%d %H:%M')
     })
     
     return display_df, df
@@ -218,9 +216,6 @@ def main():
             st.cache_data.clear()
             st.rerun()
     
-    # Main content area
-    col1, col2, col3 = st.columns(3)
-    
     # Fetch data with loading spinner
     with st.spinner("Fetching data from Telegram..."):
         try:
@@ -239,48 +234,74 @@ def main():
                 # Format and sort dataframe
                 display_df, full_df = format_dataframe(df, sort_by, ascending)
                 
-                # Display metrics
+                # Main metrics row
+                col1, col2, col3 = st.columns(3)
                 with col1:
-                    st.metric("Total Hits", len(df))
+                    st.metric("📊 Total Hits", len(df))
                 
                 with col2:
                     # Average gain dari top 5 performers
                     top5_avg_gain = df.nlargest(5, "pct_to_t4")["pct_to_t4"].mean()
-                    st.metric("Avg Gain (Top 5)", f"{top5_avg_gain:.2f}%")
+                    st.metric("🚀 Avg Gain (Top 5)", f"{top5_avg_gain:.2f}%")
                 
                 with col3:
                     avg_duration = df["duration_minutes"].mean()
                     hours = int(avg_duration // 60)
                     minutes = int(avg_duration % 60)
-                    st.metric("Avg Duration", f"{hours}h {minutes}m")
+                    st.metric("⏰ Avg Duration", f"{hours}h {minutes}m")
+
+                # Statistics section dengan UI yang lebih menarik
+                st.markdown("---")
+                st.subheader("📈 Performance Statistics")
+                
+                # Statistics cards
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    st.markdown("""
+                    <div style="background: linear-gradient(90deg, #4CAF50, #45a049); 
+                                padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <h4 style="color: white; margin: 0;">🏆 Top 5 Gainers</h4>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    top_gainers = df.nlargest(5, "pct_to_t4")[["pair", "pct_display"]]
+                    for idx, row in top_gainers.iterrows():
+                        st.markdown(f"""
+                        <div style="background: #f0f8f0; padding: 10px; border-radius: 5px; margin: 5px 0; 
+                                    border-left: 4px solid #4CAF50;">
+                            <strong>{row['pair']}</strong>: <span style="color: #4CAF50; font-weight: bold;">{row['pct_display']}</span>
+                        </div>
+                        """, unsafe_allow_html=True)
+                
+                with col2:
+                    st.markdown("""
+                    <div style="background: linear-gradient(90deg, #2196F3, #1976D2); 
+                                padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <h4 style="color: white; margin: 0;">⚡ Fastest 5 Hits</h4>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    fastest = df.nsmallest(5, "duration_minutes")[["pair", "duration_display"]]
+                    for idx, row in fastest.iterrows():
+                        st.markdown(f"""
+                        <div style="background: #f0f7ff; padding: 10px; border-radius: 5px; margin: 5px 0; 
+                                    border-left: 4px solid #2196F3;">
+                            <strong>{row['pair']}</strong>: <span style="color: #2196F3; font-weight: bold;">{row['duration_display']}</span>
+                        </div>
+                        """, unsafe_allow_html=True)
+
+                # Table section
+                st.markdown("---")
+                st.subheader("📊 Target 4 Hits Data")
                 
                 # Display main table
-                st.subheader("📊 Target 4 Hits")
-                
                 st.dataframe(
                     display_df,
                     use_container_width=True,
                     hide_index=True
                 )
-                
-                # Statistics section
-                st.subheader("📈 Statistics")
-                col1, col2 = st.columns(2)
-                
-                with col1:
-                    # Top performers
-                    st.markdown("**🏆 Top 5 Gainers**")
-                    top_gainers = df.nlargest(5, "pct_to_t4")[["pair", "pct_display"]]
-                    for idx, row in top_gainers.iterrows():
-                        st.write(f"• {row['pair']}: {row['pct_display']}")
-                
-                with col2:
-                    # Fastest hits
-                    st.markdown("**⚡ Fastest 5 Hits**")
-                    fastest = df.nsmallest(5, "duration_minutes")[["pair", "duration_display"]]
-                    for idx, row in fastest.iterrows():
-                        st.write(f"• {row['pair']}: {row['duration_display']}")
-                
+
                 # Download section
                 st.markdown("---")
                 col1, col2, col3 = st.columns([1, 1, 1])
