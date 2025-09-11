@@ -153,7 +153,7 @@ def format_dataframe(df, sort_by="update_date_wib", ascending=False):
 # ====== MAIN APP ======
 def main():
     st.title("📈 Top Gainer Live Data of LuxQuant System")
-    st.markdown("Track trading signals that reached Target 4")
+
     
     # Sidebar untuk settings
     with st.sidebar:
