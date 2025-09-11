@@ -279,7 +279,7 @@ def main():
                     for idx, row in fastest.iterrows():
                         st.write(f"• {row['pair']}: {row['duration_display']}")
                 
-                # Download button
+                # Download button - export ke Excel
                 csv_df = full_df[[
                     "pair", "entry", "target4_final", "pct_display", 
                     "duration_display", "date_wib", "update_date_wib"
@@ -289,12 +289,18 @@ def main():
                     "Duration", "Signal Time", "Hit Time"
                 ]
                 
-                csv = csv_df.to_csv(index=False)
+                # Convert to Excel
+                from io import BytesIO
+                excel_buffer = BytesIO()
+                with pd.ExcelWriter(excel_buffer, engine='openpyxl') as writer:
+                    csv_df.to_excel(writer, sheet_name='Target4_Hits', index=False)
+                excel_data = excel_buffer.getvalue()
+                
                 st.download_button(
-                    label="📥 Download CSV",
-                    data=csv,
-                    file_name=f"t4_hits_{start_date}_{end_date}.csv",
-                    mime="text/csv"
+                    label="📥 Download Excel",
+                    data=excel_data,
+                    file_name=f"t4_hits_{start_date}_{end_date}.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                 )
                 
             else:
