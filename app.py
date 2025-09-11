@@ -140,12 +140,14 @@ def format_dataframe(df, sort_by="update_date_wib", ascending=False):
     # Create display dataframe
     display_df = pd.DataFrame({
         "Pair": df["pair"],
+        "📋 Signal": df["root_link"],
         "Entry": df["entry"],
         "Target 4": df["target4_final"],
         "Gain %": df["pct_display"],
         "Duration": df["duration_display"],
         "Signal Time": df["date_wib"].dt.strftime('%Y-%m-%d %H:%M:%S'),
         "Hit Time": df["update_date_wib"].dt.strftime('%Y-%m-%d %H:%M:%S'),
+        "✅ Hit": df["update_link"]
     })
     
     return display_df, df
@@ -279,29 +281,44 @@ def main():
                     for idx, row in fastest.iterrows():
                         st.write(f"• {row['pair']}: {row['duration_display']}")
                 
-                # Download button - export ke Excel
-                csv_df = full_df[[
+                # Download button - export ke Excel atau CSV
+                export_df = full_df[[
                     "pair", "entry", "target4_final", "pct_display", 
                     "duration_display", "date_wib", "update_date_wib"
                 ]].copy()
-                csv_df.columns = [
+                export_df.columns = [
                     "Pair", "Entry", "Target 4", "Gain %", 
                     "Duration", "Signal Time", "Hit Time"
                 ]
                 
-                # Convert to Excel
-                from io import BytesIO
-                excel_buffer = BytesIO()
-                with pd.ExcelWriter(excel_buffer, engine='openpyxl') as writer:
-                    csv_df.to_excel(writer, sheet_name='Target4_Hits', index=False)
-                excel_data = excel_buffer.getvalue()
+                # Convert datetime columns to string for Excel compatibility
+                export_df["Signal Time"] = export_df["Signal Time"].dt.strftime('%Y-%m-%d %H:%M:%S')
+                export_df["Hit Time"] = export_df["Hit Time"].dt.strftime('%Y-%m-%d %H:%M:%S')
                 
-                st.download_button(
-                    label="📥 Download Excel",
-                    data=excel_data,
-                    file_name=f"t4_hits_{start_date}_{end_date}.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                )
+                # Try Excel first, fallback to CSV
+                try:
+                    from io import BytesIO
+                    excel_buffer = BytesIO()
+                    with pd.ExcelWriter(excel_buffer, engine='xlsxwriter') as writer:
+                        export_df.to_excel(writer, sheet_name='Target4_Hits', index=False)
+                    excel_data = excel_buffer.getvalue()
+                    
+                    st.download_button(
+                        label="📥 Download Excel",
+                        data=excel_data,
+                        file_name=f"t4_hits_{start_date}_{end_date}.xlsx",
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    )
+                except (ImportError, Exception) as e:
+                    # Fallback to CSV if Excel export fails
+                    csv_data = export_df.to_csv(index=False)
+                    st.download_button(
+                        label="📥 Download CSV",
+                        data=csv_data,
+                        file_name=f"t4_hits_{start_date}_{end_date}.csv",
+                        mime="text/csv"
+                    )
+                    st.warning(f"Excel export failed, using CSV instead: {str(e)}")
                 
             else:
                 st.info("No Target 4 hits found in the selected date range.")
