@@ -2,3 +2,4 @@ streamlit==1.40.2
 pandas==2.2.3
 telethon==1.37.0
 pytz==2024.2
+openpyxl
