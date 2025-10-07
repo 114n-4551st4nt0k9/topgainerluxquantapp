@@ -1,0 +1,342 @@
+/* ========================================
+   LuxQuant VIP - Dark Gold Premium Theme
+   ======================================== */
+
+/* Root Variables - Ganti warna disini */
+:root {
+  /* Background Colors */
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-card: #1a1a1a;
+  --bg-hover: #2a2a2a;
+  
+  /* Gold/Yellow Accent Colors */
+  --gold-primary: #FFD700;
+  --gold-secondary: #FFC107;
+  --gold-dark: #B8860B;
+  --gold-glow: rgba(255, 215, 0, 0.3);
+  
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #e0e0e0;
+  --text-muted: #999999;
+  
+  /* Status Colors */
+  --green-positive: #00ff00;
+  --green-positive-alt: #4CAF50;
+  --red-negative: #ff0000;
+  --red-negative-alt: #f44336;
+  
+  /* Border & Shadow */
+  --border-color: #333333;
+  --shadow-gold: 0 0 20px rgba(255, 215, 0, 0.5);
+  --shadow-card: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================
+   Global Styles
+   ======================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  line-height: 1.6;
+}
+
+/* ========================================
+   Header & Navigation
+   ======================================== */
+header {
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 2rem;
+}
+
+.logo {
+  color: var(--gold-primary);
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-shadow: var(--shadow-gold);
+}
+
+nav a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: var(--gold-primary);
+}
+
+/* ========================================
+   Ticker Bar (Crypto Prices)
+   ======================================== */
+.ticker-bar {
+  background-color: var(--bg-secondary);
+  padding: 0.75rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.ticker-item {
+  display: inline-block;
+  margin-right: 2rem;
+  color: var(--text-secondary);
+}
+
+.ticker-positive {
+  color: var(--green-positive);
+}
+
+.ticker-negative {
+  color: var(--red-negative);
+}
+
+/* ========================================
+   Buttons
+   ======================================== */
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
+  color: var(--bg-primary);
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-gold);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--gold-primary);
+  border: 2px solid var(--gold-primary);
+  padding: 0.75rem 2rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--gold-primary);
+  color: var(--bg-primary);
+}
+
+/* ========================================
+   Cards & Containers
+   ======================================== */
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: var(--shadow-card);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  border-color: var(--gold-dark);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* ========================================
+   Hero Section
+   ======================================== */
+.hero {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: radial-gradient(circle at center, var(--bg-secondary), var(--bg-primary));
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.hero .highlight {
+  color: var(--gold-primary);
+  text-shadow: var(--shadow-gold);
+}
+
+.hero p {
+  color: var(--text-secondary);
+  max-width: 800px;
+  margin: 0 auto 2rem;
+}
+
+/* ========================================
+   Globe/Earth Animation Container
+   ======================================== */
+.globe-container {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  margin: 2rem auto;
+}
+
+.globe {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #1a4d7a, #0a1929);
+  box-shadow: 
+    0 0 50px var(--gold-glow),
+    inset 0 0 50px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.globe-glow {
+  position: absolute;
+  top: -20%;
+  left: -20%;
+  width: 140%;
+  height: 140%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--gold-glow), transparent 70%);
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ========================================
+   Badge/Tag
+   ======================================== */
+.badge {
+  display: inline-block;
+  background-color: var(--bg-card);
+  color: var(--gold-primary);
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--gold-dark);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* ========================================
+   Stats/Numbers
+   ======================================== */
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--gold-primary);
+  text-shadow: var(--shadow-gold);
+}
+
+.stat-label {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ========================================
+   Table Styles
+   ======================================== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--bg-card);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+thead {
+  background-color: var(--bg-secondary);
+}
+
+th {
+  color: var(--gold-primary);
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid var(--gold-dark);
+}
+
+td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
+tr:hover {
+  background-color: var(--bg-hover);
+}
+
+/* ========================================
+   Form Inputs
+   ======================================== */
+input, select, textarea {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 0.75rem;
+  border-radius: 8px;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--gold-primary);
+  box-shadow: 0 0 10px var(--gold-glow);
+}
+
+/* ========================================
+   Scrollbar Styling
+   ======================================== */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold-dark);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-primary);
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+  
+  .globe-container {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .stat-number {
+    font-size: 1.75rem;
+  }
+}
