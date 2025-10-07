@@ -224,7 +224,7 @@ def apply_luxquant_theme():
 
 # ====== PAGE CONFIG ======
 st.set_page_config(
-    page_title="LuxQuant VIP | Target 4 Tracker",
+    page_title="LuxQuant VIP | Target Max Reached Tracker",
     page_icon="📈",
     layout="wide"
 )
