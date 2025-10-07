@@ -7,12 +7,230 @@ import asyncio
 from telethon import TelegramClient
 from telethon.sessions import StringSession
 
+# ====== CUSTOM CSS - DARK GOLD THEME ======
+def apply_luxquant_theme():
+    st.markdown("""
+    <style>
+    /* Import Google Font */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    
+    /* Root Variables */
+    :root {
+        --gold-primary: #FFD700;
+        --gold-secondary: #FFC107;
+        --gold-dark: #B8860B;
+        --bg-black: #000000;
+        --bg-dark: #0a0a0a;
+        --bg-card: #1a1a1a;
+        --text-white: #ffffff;
+        --text-gray: #e0e0e0;
+        --green: #00ff00;
+        --red: #ff0000;
+    }
+    
+    /* Global Background */
+    .stApp {
+        background-color: #000000;
+        color: #ffffff;
+        font-family: 'Inter', sans-serif;
+    }
+    
+    /* Main Container */
+    .main .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        max-width: 1400px;
+    }
+    
+    /* Title Styling */
+    h1 {
+        color: #FFD700 !important;
+        text-align: center;
+        font-weight: 700;
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        margin-bottom: 2rem;
+    }
+    
+    h2, h3, h4 {
+        color: #FFD700 !important;
+        font-weight: 600;
+    }
+    
+    /* Sidebar Styling */
+    [data-testid="stSidebar"] {
+        background-color: #0a0a0a;
+        border-right: 1px solid #333;
+    }
+    
+    [data-testid="stSidebar"] h1,
+    [data-testid="stSidebar"] h2,
+    [data-testid="stSidebar"] h3 {
+        color: #FFD700 !important;
+    }
+    
+    /* Metric Cards */
+    [data-testid="stMetric"] {
+        background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+        padding: 1.5rem;
+        border-radius: 12px;
+        border: 1px solid #333;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+    
+    [data-testid="stMetric"] label {
+        color: #e0e0e0 !important;
+        font-size: 0.9rem !important;
+    }
+    
+    [data-testid="stMetric"] [data-testid="stMetricValue"] {
+        color: #FFD700 !important;
+        font-size: 2rem !important;
+        font-weight: 700 !important;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    }
+    
+    /* Button Styling */
+    .stButton > button {
+        background: linear-gradient(135deg, #FFD700, #FFC107);
+        color: #000000;
+        font-weight: 600;
+        border: none;
+        border-radius: 25px;
+        padding: 0.75rem 2rem;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        transition: all 0.3s ease;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+    }
+    
+    /* Input Fields */
+    .stTextInput > div > div > input,
+    .stSelectbox > div > div,
+    .stDateInput > div > div > input {
+        background-color: #1a1a1a;
+        color: #ffffff;
+        border: 1px solid #333;
+        border-radius: 8px;
+    }
+    
+    .stTextInput > div > div > input:focus,
+    .stSelectbox > div > div:focus,
+    .stDateInput > div > div > input:focus {
+        border-color: #FFD700;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    }
+    
+    /* Radio Buttons */
+    .stRadio > label {
+        color: #e0e0e0 !important;
+    }
+    
+    /* DataFrame Styling */
+    [data-testid="stDataFrame"] {
+        background-color: #1a1a1a;
+        border-radius: 12px;
+        border: 1px solid #333;
+    }
+    
+    .dataframe {
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+    }
+    
+    .dataframe th {
+        background-color: #0a0a0a !important;
+        color: #FFD700 !important;
+        font-weight: 600 !important;
+        border-bottom: 2px solid #B8860B !important;
+    }
+    
+    .dataframe td {
+        background-color: #1a1a1a !important;
+        color: #e0e0e0 !important;
+        border-bottom: 1px solid #333 !important;
+    }
+    
+    .dataframe tr:hover {
+        background-color: #2a2a2a !important;
+    }
+    
+    /* Success/Error/Info Messages */
+    .stSuccess {
+        background-color: #1a3a1a;
+        border-left: 4px solid #00ff00;
+        color: #00ff00;
+    }
+    
+    .stError {
+        background-color: #3a1a1a;
+        border-left: 4px solid #ff0000;
+        color: #ff0000;
+    }
+    
+    .stInfo {
+        background-color: #1a1a3a;
+        border-left: 4px solid #FFD700;
+        color: #FFD700;
+    }
+    
+    /* Spinner */
+    .stSpinner > div {
+        border-color: #FFD700 transparent transparent transparent !important;
+    }
+    
+    /* Divider */
+    hr {
+        border-color: #333 !important;
+    }
+    
+    /* Download Button */
+    .stDownloadButton > button {
+        background: linear-gradient(135deg, #FFD700, #FFC107);
+        color: #000000;
+        font-weight: 600;
+        border-radius: 25px;
+        border: none;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+    
+    .stDownloadButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: #0a0a0a;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #B8860B;
+        border-radius: 5px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: #FFD700;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
 # ====== PAGE CONFIG ======
 st.set_page_config(
-    page_title="Target 4 Tracker",
+    page_title="LuxQuant VIP | Target 4 Tracker",
     page_icon="📈",
     layout="wide"
 )
+
+# Apply custom theme
+apply_luxquant_theme()
 
 # ====== TIMEZONE & DEFAULT SETTINGS ======
 wib = pytz.timezone("Asia/Jakarta")
@@ -54,7 +272,6 @@ def to_utc_aware(dt):
 
 async def scrape_only_linked_hits_wib(start_date, end_date, channel_id, api_id, api_hash, session_string):
     """Scrape data dengan filter tanggal yang dinamis"""
-    # Convert dates to UTC
     cutoff_start_wib = wib.localize(datetime.combine(start_date, datetime.min.time()))
     cutoff_end_wib = wib.localize(datetime.combine(end_date, datetime.max.time()))
     cutoff_start_utc = cutoff_start_wib.astimezone(pytz.UTC)
@@ -69,7 +286,6 @@ async def scrape_only_linked_hits_wib(start_date, end_date, channel_id, api_id, 
     async for m in client.iter_messages(entity):
         m_utc = to_utc_aware(m.date)
         
-        # Skip jika diluar range tanggal
         if m_utc > cutoff_end_utc:
             continue
         if m_utc < cutoff_start_utc:
@@ -90,11 +306,9 @@ async def scrape_only_linked_hits_wib(start_date, end_date, channel_id, api_id, 
         target4 = t4_val if t4_val is not None else root_parsed["target4"]
         pct = (target4 - entry) / entry * 100.0
 
-        # waktu ke WIB
         date_wib = to_utc_aware(root.date).astimezone(wib)
         upd_wib  = m_utc.astimezone(wib)
 
-        # durasi dalam menit
         dur_min = (m_utc - to_utc_aware(root.date)).total_seconds() / 60.0
         dur_str = f"{int(dur_min//60)}h {int(dur_min%60)}m"
 
@@ -125,18 +339,15 @@ def format_dataframe(df, sort_by="update_date_wib", ascending=False):
     if df.empty:
         return df
     
-    # Sort berdasarkan pilihan
     if sort_by == "pct_to_t4":
         df = df.sort_values("pct_to_t4", ascending=ascending)
     elif sort_by == "duration_minutes":
         df = df.sort_values("duration_minutes", ascending=ascending)
-    else:  # update_date_wib
+    else:
         df = df.sort_values("update_date_wib", ascending=ascending)
     
-    # Reset index
     df = df.reset_index(drop=True)
     
-    # Create display dataframe tanpa kolom link
     display_df = pd.DataFrame({
         "Pair": df["pair"],
         "Entry": df["entry"],
@@ -151,14 +362,23 @@ def format_dataframe(df, sort_by="update_date_wib", ascending=False):
 
 # ====== MAIN APP ======
 def main():
-    st.title("📈 Top Gainer Live Data of LuxQuant System")
+    # Header dengan styling gold
+    st.markdown("""
+    <div style="text-align: center; padding: 2rem 0;">
+        <h1 style="font-size: 3rem; margin: 0;">📈 LuxQuant VIP</h1>
+        <p style="color: #FFD700; font-size: 1.2rem; margin: 0.5rem 0;">
+            Top Gainer Live Data - Target 4 Tracker
+        </p>
+        <p style="color: #e0e0e0; font-size: 0.9rem;">
+            Historical Accuracy of 86.5% since 2023
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
-    
     # Sidebar untuk settings
     with st.sidebar:
         st.header("⚙️ Settings")
         
-        # Get credentials from secrets
         try:
             api_id = st.secrets["api_id"]
             api_hash = st.secrets["api_hash"]
@@ -170,7 +390,6 @@ def main():
         
         st.success("✅ Connected to Telegram")
         
-        # Date range picker
         st.subheader("📅 Date Range Filter")
         col1, col2 = st.columns(2)
         
@@ -192,7 +411,6 @@ def main():
             st.error("Start date must be before end date")
             st.stop()
         
-        # Sorting options
         st.subheader("🔀 Sort Options")
         sort_by = st.selectbox(
             "Sort by:",
@@ -210,23 +428,23 @@ def main():
         )
         ascending = sort_order == "Ascending"
         
-        # Refresh button
         if st.button("🔄 Refresh Data", type="primary", use_container_width=True):
             st.cache_data.clear()
             st.rerun()
     
-    # Display periode yang dipilih
+    # Period badge
     st.markdown(f"""
-    <div style="background: linear-gradient(90deg, #667eea, #764ba2); 
-                padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center;">
-        <h3 style="color: white; margin: 0;">📅 Selected Period: {start_date.strftime('%B %d, %Y')} - {end_date.strftime('%B %d, %Y')}</h3>
+    <div style="background: linear-gradient(135deg, #FFD700, #FFC107); 
+                padding: 15px; border-radius: 12px; margin-bottom: 30px; text-align: center;
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);">
+        <h3 style="color: #000000; margin: 0; font-weight: 600;">
+            📅 Period: {start_date.strftime('%B %d, %Y')} - {end_date.strftime('%B %d, %Y')}
+        </h3>
     </div>
     """, unsafe_allow_html=True)
     
-    # Fetch data with loading spinner
     with st.spinner("Fetching data from Telegram..."):
         try:
-            # Create event loop for async function
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             
@@ -238,16 +456,13 @@ def main():
             )
             
             if not df.empty:
-                # Format and sort dataframe
                 display_df, full_df = format_dataframe(df, sort_by, ascending)
                 
-                # Main metrics row
                 col1, col2, col3 = st.columns(3)
                 with col1:
                     st.metric("📊 Total Hits", len(df))
                 
                 with col2:
-                    # Average gain dari top 5 performers
                     top5_avg_gain = df.nlargest(5, "pct_to_t4")["pct_to_t4"].mean()
                     st.metric("🚀 Avg Gain (Top 5)", f"{top5_avg_gain:.2f}%")
                 
@@ -257,63 +472,59 @@ def main():
                     minutes = int(avg_duration % 60)
                     st.metric("⏰ Avg Duration", f"{hours}h {minutes}m")
 
-                # Statistics section dengan UI yang lebih menarik
                 st.markdown("---")
                 st.subheader("📈 Performance Statistics")
                 
-                # Statistics cards
                 col1, col2 = st.columns(2)
                 
                 with col1:
                     st.markdown("""
-                    <div style="background: linear-gradient(90deg, #4CAF50, #45a049); 
-                                padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                        <h4 style="color: white; margin: 0;">🏆 Top 5 Gainers</h4>
+                    <div style="background: linear-gradient(135deg, #1a1a1a, #2a2a2a); 
+                                padding: 20px; border-radius: 12px; border: 1px solid #FFD700;">
+                        <h4 style="color: #FFD700; margin: 0;">🏆 Top 5 Gainers</h4>
                     </div>
                     """, unsafe_allow_html=True)
                     
                     top_gainers = df.nlargest(5, "pct_to_t4")[["pair", "pct_display"]]
                     for idx, row in top_gainers.iterrows():
                         st.markdown(f"""
-                        <div style="background: #f0f8f0; padding: 10px; border-radius: 5px; margin: 5px 0; 
-                                    border-left: 4px solid #4CAF50;">
-                            <strong>{row['pair']}</strong>: <span style="color: #4CAF50; font-weight: bold;">{row['pct_display']}</span>
+                        <div style="background: #1a1a1a; padding: 12px; border-radius: 8px; margin: 10px 0; 
+                                    border-left: 4px solid #00ff00;">
+                            <strong style="color: #FFD700;">{row['pair']}</strong>: 
+                            <span style="color: #00ff00; font-weight: bold;">{row['pct_display']}</span>
                         </div>
                         """, unsafe_allow_html=True)
                 
                 with col2:
                     st.markdown("""
-                    <div style="background: linear-gradient(90deg, #2196F3, #1976D2); 
-                                padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                        <h4 style="color: white; margin: 0;">⚡ Fastest 5 Hits</h4>
+                    <div style="background: linear-gradient(135deg, #1a1a1a, #2a2a2a); 
+                                padding: 20px; border-radius: 12px; border: 1px solid #FFD700;">
+                        <h4 style="color: #FFD700; margin: 0;">⚡ Fastest 5 Hits</h4>
                     </div>
                     """, unsafe_allow_html=True)
                     
                     fastest = df.nsmallest(5, "duration_minutes")[["pair", "duration_display"]]
                     for idx, row in fastest.iterrows():
                         st.markdown(f"""
-                        <div style="background: #f0f7ff; padding: 10px; border-radius: 5px; margin: 5px 0; 
-                                    border-left: 4px solid #2196F3;">
-                            <strong>{row['pair']}</strong>: <span style="color: #2196F3; font-weight: bold;">{row['duration_display']}</span>
+                        <div style="background: #1a1a1a; padding: 12px; border-radius: 8px; margin: 10px 0; 
+                                    border-left: 4px solid #FFD700;">
+                            <strong style="color: #FFD700;">{row['pair']}</strong>: 
+                            <span style="color: #e0e0e0; font-weight: bold;">{row['duration_display']}</span>
                         </div>
                         """, unsafe_allow_html=True)
 
-                # Table section
                 st.markdown("---")
                 st.subheader("📊 Target 4 Hits Data")
                 
-                # Display main table
                 st.dataframe(
                     display_df,
                     use_container_width=True,
                     hide_index=True
                 )
 
-                # Download section
                 st.markdown("---")
                 col1, col2, col3 = st.columns([1, 1, 1])
                 with col2:
-                    # Download button - export ke Excel atau CSV
                     export_df = full_df[[
                         "pair", "entry", "target4_final", "pct_display", 
                         "duration_display", "date_wib", "update_date_wib"
@@ -323,11 +534,9 @@ def main():
                         "Duration", "Signal Time", "Hit Time"
                     ]
                     
-                    # Convert datetime columns to string for Excel compatibility
                     export_df["Signal Time"] = export_df["Signal Time"].dt.strftime('%Y-%m-%d %H:%M:%S')
                     export_df["Hit Time"] = export_df["Hit Time"].dt.strftime('%Y-%m-%d %H:%M:%S')
                     
-                    # Try Excel first, fallback to CSV
                     try:
                         from io import BytesIO
                         excel_buffer = BytesIO()
@@ -338,21 +547,19 @@ def main():
                         st.download_button(
                             label="📥 Download Excel",
                             data=excel_data,
-                            file_name=f"t4_hits_{start_date}_{end_date}.xlsx",
+                            file_name=f"luxquant_t4_hits_{start_date}_{end_date}.xlsx",
                             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                             use_container_width=True
                         )
                     except (ImportError, Exception) as e:
-                        # Fallback to CSV if Excel export fails
                         csv_data = export_df.to_csv(index=False)
                         st.download_button(
                             label="📥 Download CSV",
                             data=csv_data,
-                            file_name=f"t4_hits_{start_date}_{end_date}.csv",
+                            file_name=f"luxquant_t4_hits_{start_date}_{end_date}.csv",
                             mime="text/csv",
                             use_container_width=True
                         )
-                        st.warning(f"Excel export failed, using CSV instead: {str(e)}")
                 
             else:
                 st.info("No Target 4 hits found in the selected date range.")
