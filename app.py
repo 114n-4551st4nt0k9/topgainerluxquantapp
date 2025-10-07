@@ -435,7 +435,7 @@ def main():
                 padding: 15px; border-radius: 12px; margin-bottom: 30px; text-align: center;
                 box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);">
         <h3 style="color: #000000; margin: 0; font-weight: 600;">
-            📅 Period: {start_date.strftime('%B %d, %Y')} - {end_date.strftime('%B %d, %Y')}
+            <span style="color: #000000;">📅 Period: {start_date.strftime('%B %d, %Y')} - {end_date.strftime('%B %d, %Y')}</span>
         </h3>
     </div>
     """, unsafe_allow_html=True)
