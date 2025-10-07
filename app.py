@@ -457,7 +457,7 @@ def main():
                 
                 col1, col2, col3 = st.columns(3)
                 with col1:
-                    st.metric("📊 Total Hits", len(df))
+                    st.metric("📊 Total Hits TP Max", len(df))
                 
                 with col2:
                     top5_avg_gain = df.nlargest(5, "pct_to_t4")["pct_to_t4"].mean()
