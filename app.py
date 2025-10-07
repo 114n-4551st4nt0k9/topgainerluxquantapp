@@ -224,7 +224,7 @@ def apply_luxquant_theme():
 
 # ====== PAGE CONFIG ======
 st.set_page_config(
-    page_title="LuxQuant VIP | Top Gainer Tracker",
+    page_title="LuxQuant VIP | Target 4 Tracker",
     page_icon="📈",
     layout="wide"
 )
@@ -367,10 +367,7 @@ def main():
     <div style="text-align: center; padding: 2rem 0;">
         <h1 style="font-size: 3rem; margin: 0;">📈 LuxQuant VIP</h1>
         <p style="color: #FFD700; font-size: 1.2rem; margin: 0.5rem 0;">
-            Top Gainer Live Data - Target 4 Tracker
-        </p>
-        <p style="color: #e0e0e0; font-size: 0.9rem;">
-            Historical Accuracy of 86.5% since 2023
+            Top Gainer Live Data - Top Gainer Tracker
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -388,7 +385,7 @@ def main():
             st.error("Please configure secrets in Streamlit Cloud")
             st.stop()
         
-        st.success("✅ Connected to Telegram")
+        st.success("✅ Connected to Database")
         
         st.subheader("📅 Date Range Filter")
         col1, col2 = st.columns(2)
@@ -443,7 +440,7 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    with st.spinner("Fetching data from Telegram..."):
+    with st.spinner("Fetching data from Database..."):
         try:
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
